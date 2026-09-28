@@ -1,16 +1,25 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Login from "./components/Login";
 import Home from "./components/Home";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  useEffect(() => {
+    const storedUserInformation = localStorage.getItem('isLoggedIn');
+
+    if (storedUserInformation === '1') {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   const loginHandler = (email, password) => {
-    // Basic login action—useEffect and localStorage will be introduced here
+    localStorage.setItem('isLoggedIn', '1');
     setIsLoggedIn(true);
   };
 
   const logoutHandler = () => {
+    localStorage.removeItem('isLoggedIn');
     setIsLoggedIn(false);
   };
 
