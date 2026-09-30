@@ -2,6 +2,20 @@ import { useState, useReducer } from "react";
 import classes from "./Login.module.css";
 
 const emailReducer = (state, action) => {
+  if (action.type === "USER_INPUT") {
+    return {
+      value: action.val,
+      isValid: action.val.includes("@")
+    };
+  }
+
+  if (action.type == "INPUT_BLUR") {
+    return {
+      value: state.value,
+      isValid: state.value.includes("@")
+    };
+  }
+
   return {
     value: "",
     isValid: false
@@ -23,7 +37,11 @@ const Login = (props) => {
 
 
   const emailChangeHandler = (event) => {
-    setEnteredEmail(event.target.value);
+    dispatchEmail({
+      type: "USER_INPUT",
+      val: event.target.value
+    });
+
     setFormIsValid(
       emailState.isValid && enteredPassword.trim().length > 6
     );
@@ -37,7 +55,9 @@ const Login = (props) => {
   };
 
   const validateEmailHandler = () => {
-    //setEmailIsValid(enteredEmail.includes("@"));
+    dispatchEmail({
+      type: "INPUT_BLUR"
+    });
   };
 
   const validatePasswordHandler = () => {
